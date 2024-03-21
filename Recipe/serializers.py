@@ -19,3 +19,5 @@ class RecipeSerializer(serializers.ModelSerializer):
     def get_direction(self, obj):
         serializer = DirectionSerializer(data=obj.directions.all(), many=True)
         return serializer
+
+
