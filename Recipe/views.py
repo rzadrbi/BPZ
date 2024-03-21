@@ -15,11 +15,19 @@ class RecipeListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class RecipeDirectionView(APIView, StandardResultsSetPagination):
-    serializer_class = DirectionSerializer
+# class RecipeDirectionView(APIView, StandardResultsSetPagination):
+#     serializer_class = DirectionSerializer
+#
+#     def get(self, request):
+#         instance = Directions.objects.all()
+#         paginated_instance = self.paginate_queryset(instance, request)
+#         serializer = DirectionSerializer(instance=paginated_instance, many=True, context={'request': request})
+#         return self.get_paginated_response(data=serializer.data)
+
+
+class DirectionView(APIView):
 
     def get(self, request):
-        instance = Directions.objects.all()
-        paginated_instance = self.paginate_queryset(instance, request)
-        serializer = DirectionSerializer(instance=paginated_instance, many=True, context={'request': request})
-        return self.get_paginated_response(data=serializer.data)
+        queryset = Directions.objects.all()
+        serializer = DirectionSerializer(instance=queryset, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
