@@ -8,8 +8,8 @@ class DirInline(admin.TabularInline):
 
 
 class NutInline(admin.TabularInline):
-    model = Nutrition
-    fields = ('name', 'amount',)
+    model = Nutrition_amount
+    fields = ('nutrition', 'amount',)
 
 
 class IngInline(admin.TabularInline):
@@ -28,3 +28,6 @@ class RecipeAdmin(admin.ModelAdmin):
 @admin.register(Ingredients)
 class ModelNameAdmin(admin.ModelAdmin):
     list_filter = ('name',)
+
+
+admin.site.register(Nutrition)

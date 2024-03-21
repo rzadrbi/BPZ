@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from Recipe.models import Recipe
@@ -12,3 +12,7 @@ class RecipeListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class RecipeDetailView(viewsets.ModelViewSet):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    permission_classes = []
