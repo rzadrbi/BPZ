@@ -1,23 +1,21 @@
-from PIL.ImageCms import Direction
 from rest_framework import serializers
-from Recipe.models import Recipe
+from Recipe.models import Recipe, Directions
 
 
 class DirectionSerializer(serializers.ModelSerializer):
+    Recipe = serializers.ReadOnlyField(source='Recipe.name')
     class Meta:
-        model = Direction
+        model = Directions
         fields = '__all__'
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    direction = serializers.SerializerMethodField()
+    directions = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
-        fields = '__all__'
+        fields = ('name', 'description', 'image', 'cook_time', 'directions')
 
-    def get_direction(self, obj):
-        serializer = DirectionSerializer(data=obj.directions.all(), many=True)
-        return serializer
-
-
+    def get_directions(self, obj):
+        serializer = DirectionSerializer(instance=obj.directions.all(), many=False)
+        return serializer.data
