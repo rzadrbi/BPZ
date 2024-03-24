@@ -17,6 +17,7 @@ class RecipeListView(APIView):
 
 
 class DirectionView(APIView):
+    serializer_class = DirectionSerializer
 
     def get(self, request):
         queryset = Directions.objects.all()
@@ -25,6 +26,7 @@ class DirectionView(APIView):
 
 
 class RandomRecipeView(APIView):
+    serializer_class = RecipeSerializer
     def get(self, request, *args, **kwargs):
         count = Recipe.objects.count()  # Get the total count of recipes
         if count == 0:
@@ -36,6 +38,7 @@ class RandomRecipeView(APIView):
 
 
 class RecipeByTimeView(APIView):
+    serializer_class = RecipeSerializer
     def get(self, request):
         min_time = request.GET.get('min_time', 0)
         max_time = request.GET.get('max_time', 1000)
