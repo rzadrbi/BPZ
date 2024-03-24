@@ -36,12 +36,13 @@ class RandomRecipeView(APIView):
 
 
 class RecipeByTimeView(APIView):
-    def get(self, request, max_time=1000, min_time=0):
+    def get(self, request):
+        min_time = request.GET.get('min_time', 0)
+        max_time = request.GET.get('max_time', 1000)
+        # if user didn't send the params the max_time be 1000 and min_time will be 0
+        print(min_time, max_time)
         queryterms = Q(cook_time__gte=min_time) & Q(cook_time__lte=max_time)
         recipes = Recipe.objects.filter(queryterms)
-        serializer = RecipeSerializer(instance=recipes, many=True, context={'request':request})
+        serializer = RecipeSerializer(instance=recipes, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-
 
