@@ -1,9 +1,10 @@
-from rest_framework import status, viewsets
+from django.db.models import Q
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from Recipe.models import Recipe, Directions
 from Recipe.serializers import RecipeSerializer, DirectionSerializer
-from .pagination import StandardResultsSetPagination
+import random
 
 
 class RecipeListView(APIView):
@@ -15,19 +16,32 @@ class RecipeListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# class RecipeDirectionView(APIView, StandardResultsSetPagination):
-#     serializer_class = DirectionSerializer
-#
-#     def get(self, request):
-#         instance = Directions.objects.all()
-#         paginated_instance = self.paginate_queryset(instance, request)
-#         serializer = DirectionSerializer(instance=paginated_instance, many=True, context={'request': request})
-#         return self.get_paginated_response(data=serializer.data)
-
-
 class DirectionView(APIView):
 
     def get(self, request):
         queryset = Directions.objects.all()
         serializer = DirectionSerializer(instance=queryset, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class RandomRecipeView(APIView):
+    def get(self, request, *args, **kwargs):
+        count = Recipe.objects.count()  # Get the total count of recipes
+        if count == 0:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        random_idx = random.randint(0, count - 1)  # Generate a random index
+        recipe = Recipe.objects.all()[random_idx]  # Retrieve a random object
+        serializer = RecipeSerializer(recipe, context={'request': request})
+        return Response(serializer.data)
+
+
+class RecipeByTimeView(APIView):
+    def get(self, request, max_time=1000, min_time=0):
+        queryterms = Q(cook_time__gte=min_time) & Q(cook_time__lte=max_time)
+        recipes = Recipe.objects.filter(queryterms)
+        serializer = RecipeSerializer(instance=recipes, many=True, context={'request':request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
