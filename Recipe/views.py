@@ -8,11 +8,13 @@ import random
 
 
 class RecipeListView(APIView):
+    # a view that return the list of all recipes
     serializer_class = RecipeSerializer
 
     def get(self, request):
-        recipes = Recipe.objects.all()
-        serializer = RecipeSerializer(instance=recipes, many=True, context={'request': request})
+        recipes = Recipe.objects.all()  # a query of all instances
+        serializer = RecipeSerializer(instance=recipes, many=True, context={'request': request})  # pass the query
+        # and request to serializer
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -43,7 +45,6 @@ class RecipeByTimeView(APIView):
         min_time = request.GET.get('min_time', 0)
         max_time = request.GET.get('max_time', 1000)
         # if user didn't send the params the max_time be 1000 and min_time will be 0
-        print(min_time, max_time)
         queryterms = Q(cook_time__gte=min_time) & Q(cook_time__lte=max_time)
         recipes = Recipe.objects.filter(queryterms)
         serializer = RecipeSerializer(instance=recipes, many=True, context={'request': request})
