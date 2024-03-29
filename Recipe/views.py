@@ -19,6 +19,7 @@ class RecipeListView(APIView):
 
 
 class DirectionView(APIView):
+    # its a view that return the direction of a recipe
     serializer_class = DirectionSerializer
 
     def get(self, request):
