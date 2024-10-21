@@ -6,3 +6,5 @@ class RecipeConfig(AppConfig):
     name = 'Recipe'
 
 
+
+
