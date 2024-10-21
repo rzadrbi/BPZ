@@ -61,3 +61,5 @@ class ingredients_amount(models.Model):
     def __str__(self):
         return self.Recipe.name
 
+
+
