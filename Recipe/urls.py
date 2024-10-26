@@ -10,3 +10,4 @@ urlpatterns = [
     path('search/time', views.RecipeByTimeView.as_view(), name='search_time_recipe'),
 ]
 
+
