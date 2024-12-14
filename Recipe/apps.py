@@ -8,3 +8,5 @@ class RecipeConfig(AppConfig):
 
 
 
+
+
