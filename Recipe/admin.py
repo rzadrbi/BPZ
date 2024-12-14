@@ -31,3 +31,4 @@ class ModelNameAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Nutrition)
+
